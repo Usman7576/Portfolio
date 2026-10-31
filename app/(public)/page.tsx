@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ProjectCard } from "@/components/project-card";
 import { Reveal } from "@/components/reveal";
+import { PersonJsonLd } from "@/components/person-json-ld";
 import { SectionHeading } from "@/components/section-heading";
 import { ContactCta } from "@/components/sections/contact-cta";
 import { Hero } from "@/components/sections/hero";
@@ -13,6 +14,7 @@ export default async function Home() {
 
   return (
     <>
+      <PersonJsonLd />
       <Hero />
 
       <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">

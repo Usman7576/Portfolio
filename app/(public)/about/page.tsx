@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PersonJsonLd } from "@/components/person-json-ld";
 import { SectionHeading } from "@/components/section-heading";
 import { about, skillGroups, timeline } from "@/lib/content";
 
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+      <PersonJsonLd />
       <SectionHeading as="h1" eyebrow="About" title="Hi, I'm Usman." />
 
       <div className="mt-8 space-y-5 text-lg leading-relaxed text-pretty">
