@@ -72,7 +72,6 @@ const projects: Project[] = [
       "Azure rejects the ur-PK locale for recognition; ur-IN recognises Pakistani Urdu correctly, with the ur-PK voice kept for output.",
       "Latency was measured with synthesised voices on one machine. Real microphones and networks still need testing.",
     ],
-    githubUrl: "https://github.com/Usman7576/IntelliMeet",
     featured: true,
     order: 1,
   },
