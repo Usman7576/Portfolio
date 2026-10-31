@@ -1,5 +1,6 @@
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GitHubIcon } from "@/components/icons";
@@ -63,6 +64,17 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           </div>
         )}
       </header>
+
+      {project.coverImage && (
+        <Image
+          src={project.coverImage}
+          alt={`${project.title} screenshot`}
+          width={1200}
+          height={675}
+          className="mt-10 w-full rounded-xl border object-cover"
+          priority
+        />
+      )}
 
       <dl className="mt-10 grid gap-3 sm:grid-cols-2">
         {project.metrics.map((m) => (

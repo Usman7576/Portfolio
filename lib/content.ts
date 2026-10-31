@@ -23,6 +23,7 @@ export type Project = {
   challenges: string[];
   githubUrl?: string;
   demoUrl?: string;
+  coverImage?: string;
   featured: boolean;
   order: number;
 };
@@ -82,6 +83,7 @@ export async function getProjects(): Promise<Project[]> {
     challenges: p.challenges,
     githubUrl: p.githubUrl ?? undefined,
     demoUrl: p.demoUrl ?? undefined,
+    coverImage: p.coverImage ?? undefined,
     featured: p.featured,
     order: p.order,
   }));
@@ -93,4 +95,26 @@ export async function getFeaturedProjects(): Promise<Project[]> {
 
 export async function getProject(slug: string): Promise<Project | undefined> {
   return (await getProjects()).find((p) => p.slug === slug);
+}
+
+export type PostWithContent = Post & { content: string; coverImage?: string };
+
+export async function getPost(slug: string): Promise<PostWithContent | undefined> {
+  "use cache";
+  cacheLife("max");
+  cacheTag("posts");
+  if (!hasDatabase()) return undefined;
+
+  const p = await getDb().post.findFirst({ where: { slug, published: true } });
+  if (!p) return undefined;
+  return {
+    slug: p.slug,
+    title: p.title,
+    excerpt: p.excerpt,
+    tags: p.tags,
+    publishedAt: (p.publishedAt ?? p.createdAt).toISOString().slice(0, 10),
+    readingTime: p.readingTime,
+    content: p.content,
+    coverImage: p.coverImage ?? undefined,
+  };
 }

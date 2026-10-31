@@ -1,8 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   cacheComponents: true,
+  images: {
+    // Project and post images uploaded from the admin dashboard.
+    remotePatterns: [{ protocol: "https", hostname: "res.cloudinary.com" }],
+  },
   partialPrefetching: true,
   turbopack: {
     rules: {
