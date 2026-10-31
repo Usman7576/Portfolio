@@ -12,6 +12,7 @@ import { isChatConfigured, retrieve } from "@/lib/rag";
 import { site } from "@/lib/site";
 
 const MAX_HISTORY = 8;
+const SOURCE_MIN_SCORE = 0.6;
 
 /**
  * Groq writes the answer when its key is set (fastest); otherwise Gemini does. Search always uses Gemini.
@@ -39,6 +40,7 @@ function systemPrompt(context: string) {
 Rules:
 - Answer only questions about ${site.name}: his projects, skills, experience, education and how to contact him.
 - Use only the facts in the CONTEXT below. If the answer is not there, say you don't know and suggest the contact page (/contact). Never guess or invent numbers, employers, dates or skills.
+- Describe how things work in the same terms the CONTEXT uses; don't embellish or swap in different techniques (for example, "job APIs" must not become "scraping").
 - Refer to him in the third person ("he", "Usman").
 - Keep answers short: two to five sentences, or a few short "- " bullet points. Plain text, no headings, no tables.
 - Politely decline anything unrelated (general coding help, opinions, other people, jokes).
@@ -108,10 +110,14 @@ export async function POST(req: Request) {
   }
 
   const context = chunks.map((c, i) => `[${i + 1}] ${c.chunk}`).join("\n\n---\n\n");
-  // Link at most three distinct pages, in order of relevance.
+  // Link at most three distinct pages, and only strong matches: measured on this site's content,
+  // off-topic questions top out around 0.54 similarity while real matches score 0.62+.
+  const best = Number(chunks[0]?.score ?? 0);
   const sources: ChatSource[] = [];
   for (const c of chunks) {
-    if (sources.length < 3 && !sources.some((s) => s.url === c.url)) {
+    const score = Number(c.score);
+    const relevant = score >= SOURCE_MIN_SCORE && score >= best - 0.05;
+    if (relevant && sources.length < 3 && !sources.some((s) => s.url === c.url)) {
       sources.push({ title: c.title, url: c.url });
     }
   }

@@ -92,7 +92,7 @@ export function ChatWidget() {
                         : "bg-muted rounded-bl-sm",
                     )}
                   >
-                    {text || (busy ? "…" : "")}
+                    {text ? <FormattedText text={text} /> : busy ? "…" : ""}
                   </div>
                   {!mine && m.metadata?.sources && m.metadata.sources.length > 0 && text && (
                     <div className="mt-1.5 flex flex-wrap gap-1.5">
@@ -191,4 +191,17 @@ export function ChatWidget() {
       </div>
     </div>
   );
+}
+
+/** Answers are plain text, but models still use **bold** now and then: render it instead of showing asterisks. */
+function FormattedText({ text }: { text: string }) {
+  return text
+    .split(/(\*\*[^*\n]+\*\*)/g)
+    .map((part, i) =>
+      part.startsWith("**") && part.endsWith("**") && part.length > 4 ? (
+        <strong key={i}>{part.slice(2, -2)}</strong>
+      ) : (
+        part
+      ),
+    );
 }
