@@ -3,7 +3,7 @@
 A full-stack portfolio that is itself a portfolio project: a 3D hero, case studies of real projects,
 an admin dashboard and an "Ask about my work" RAG chatbot.
 
-**Status:** Week 1 of 7 (setup and design). See [docs/PLAN.md](docs/PLAN.md) for the full build plan.
+**Status:** Week 3 of 7 done (public site and 3D hero). See [docs/PLAN.md](docs/PLAN.md) for the full build plan.
 
 ## Projects featured
 
@@ -14,8 +14,26 @@ an admin dashboard and an "Ask about my work" RAG chatbot.
 
 ## Stack
 
-Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 · shadcn/ui · next-themes · Framer Motion.
-Coming next: React Three Fiber, Prisma + Neon Postgres (pgvector), Auth.js, Vercel AI SDK + Gemini.
+Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 · shadcn/ui · next-themes · Framer Motion ·
+three.js via React Three Fiber.
+Coming next: Prisma + Neon Postgres (pgvector), Auth.js, Vercel AI SDK + Gemini.
+
+## The 3D hero, on a budget
+
+The hero is a small neural network (about 80 nodes on desktop, 40 on phones) with signal pulses
+travelling through its layers, built in code with no model files.
+
+- Nodes are one instanced mesh and edges one line geometry, so the scene is a handful of draw calls.
+- three.js loads only after the page has loaded and the browser is idle, so it never delays the text.
+- Rendering stops when the hero scrolls off screen. Reduced-motion and very low-end devices get a
+  static gradient instead, and phones get fewer nodes behind the text.
+
+Lighthouse, production build on localhost:
+
+| Page                  | Performance (mobile / desktop) | Accessibility | Best practices | SEO |
+| --------------------- | ------------------------------ | ------------- | -------------- | --- |
+| Home (with 3D)        | 87–91 / 100                    | 100           | 100            | 100 |
+| /projects/intellimeet | 98 / 100                       | 100           | 100            | 100 |
 
 ## Run locally (no Docker)
 
