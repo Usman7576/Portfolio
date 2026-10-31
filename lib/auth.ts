@@ -16,6 +16,8 @@ export function isAdminLogin(login: unknown): boolean {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   // Reads AUTH_GITHUB_ID and AUTH_GITHUB_SECRET from the environment.
   providers: [GitHub],
+  // Vercel is trusted automatically; this also lets sign-in work on localhost (next dev / start).
+  trustHost: true,
   session: { strategy: "jwt", maxAge: 60 * 60 * 24 * 7 },
   pages: { signIn: "/admin/login", error: "/admin/login" },
   callbacks: {
