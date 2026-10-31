@@ -38,6 +38,16 @@ const slugField = z
     "Lowercase letters, numbers and dashes only.",
   );
 
+const imageUrl = z
+  .string()
+  .trim()
+  .max(500)
+  .refine(
+    (v) => v === "" || /^https?:\/\/\S+$/.test(v) || /^\/\S+$/.test(v),
+    "Use a full https:// URL or a path under /public such as /projects/name.png.",
+  )
+  .transform((v) => v || null);
+
 // Admin forms send lists as one item per line; the actions split them before validating.
 export const projectSchema = z.object({
   title: z.string().trim().min(1, "Title is required.").max(120),
@@ -54,7 +64,7 @@ export const projectSchema = z.object({
   challenges: z.array(z.string().trim().min(1)),
   githubUrl: optionalUrl,
   demoUrl: optionalUrl,
-  coverImage: optionalUrl,
+  coverImage: imageUrl,
   featured: z.boolean(),
   published: z.boolean(),
   order: z.coerce.number().int().min(0).max(999),
@@ -66,7 +76,7 @@ export const postSchema = z.object({
   excerpt: z.string().trim().min(1, "A short excerpt is required.").max(300),
   content: z.string().trim().min(1, "The post is empty."),
   tags: z.array(z.string().trim().min(1).max(30)),
-  coverImage: optionalUrl,
+  coverImage: imageUrl,
   published: z.boolean(),
 });
 
