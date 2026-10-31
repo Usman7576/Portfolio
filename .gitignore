@@ -43,3 +43,6 @@ next-env.d.ts
 
 # local-only planning files
 /AI_Engineer_Portfolio_Plan_v2.pdf
+
+# generated Prisma client
+/lib/generated/

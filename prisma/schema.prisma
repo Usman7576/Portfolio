@@ -1,0 +1,71 @@
+// Database schema. Connection URLs live in prisma.config.ts (Prisma 7).
+
+generator client {
+  provider        = "prisma-client"
+  output          = "../lib/generated/prisma"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  // pgvector is enabled now so the Week 6 chatbot can store embeddings in the same database.
+  extensions = [vector]
+}
+
+model Project {
+  id         String   @id @default(cuid())
+  slug       String   @unique
+  title      String
+  tagline    String
+  /// The real-world problem, told from the user's side.
+  problem    String
+  /// What the project does about it.
+  solution   String
+  role       String
+  techStack  String[]
+  highlights String[]
+  /// [{ "label": string, "value": string }]
+  metrics    Json     @default("[]")
+  challenges String[]
+  githubUrl  String?
+  demoUrl    String?
+  coverImage String?
+  images     String[]
+  featured   Boolean  @default(false)
+  published  Boolean  @default(false)
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([published, order])
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  excerpt     String
+  /// MDX
+  content     String
+  tags        String[]
+  coverImage  String?
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+  readingTime Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([published, publishedAt])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  body      String
+  read      Boolean  @default(false)
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([archived, createdAt])
+}
