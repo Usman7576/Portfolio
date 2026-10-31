@@ -12,6 +12,6 @@ export default defineConfig({
   // Migrations need Neon's direct (non-pooled) connection. Empty is fine for `prisma generate`,
   // which runs on install, including on Vercel builds before a database exists.
   datasource: {
-    url: process.env.DIRECT_URL ?? "",
+    url: process.env.DATABASE_URL_UNPOOLED ?? "",
   },
 });
