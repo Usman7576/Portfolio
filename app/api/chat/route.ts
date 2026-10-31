@@ -1,4 +1,5 @@
 import { google } from "@ai-sdk/google";
+import { groq } from "@ai-sdk/groq";
 import {
   convertToModelMessages,
   createUIMessageStreamResponse,
@@ -11,6 +12,13 @@ import { isChatConfigured, retrieve } from "@/lib/rag";
 import { site } from "@/lib/site";
 
 const MAX_HISTORY = 8;
+
+/** Groq writes the answer when its key is set (faster); otherwise Gemini does. Search always uses Gemini. */
+function chatModel() {
+  if (process.env.GROQ_API_KEY)
+    return groq(process.env.GROQ_CHAT_MODEL || "llama-3.3-70b-versatile");
+  return google(process.env.GEMINI_CHAT_MODEL || "gemini-2.5-flash");
+}
 
 function systemPrompt(context: string) {
   return `You are the assistant on ${site.name}'s portfolio website. Visitors are mostly recruiters and engineers.
@@ -96,7 +104,7 @@ export async function POST(req: Request) {
   }
 
   const result = streamText({
-    model: google(process.env.GEMINI_CHAT_MODEL || "gemini-2.5-flash"),
+    model: chatModel(),
     system: systemPrompt(context),
     messages: await convertToModelMessages(history),
     maxOutputTokens: 400,
