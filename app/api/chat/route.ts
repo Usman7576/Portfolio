@@ -13,11 +13,24 @@ import { site } from "@/lib/site";
 
 const MAX_HISTORY = 8;
 
-/** Groq writes the answer when its key is set (faster); otherwise Gemini does. Search always uses Gemini. */
+/**
+ * Groq writes the answer when its key is set (fastest); otherwise Gemini does. Search always uses Gemini.
+ * Defaults were picked by testing on this site's content: gpt-oss-120b answered accurately in under
+ * a second with low reasoning effort; gemini-3.5-flash-lite in about a second.
+ */
 function chatModel() {
-  if (process.env.GROQ_API_KEY)
-    return groq(process.env.GROQ_CHAT_MODEL || "llama-3.3-70b-versatile");
-  return google(process.env.GEMINI_CHAT_MODEL || "gemini-2.5-flash");
+  if (process.env.GROQ_API_KEY) {
+    const id = process.env.GROQ_CHAT_MODEL || "openai/gpt-oss-120b";
+    // Reasoning models spend output tokens thinking; keep it low so answers fit the token cap.
+    const providerOptions = id.startsWith("openai/gpt-oss")
+      ? { groq: { reasoningEffort: "low" as const } }
+      : undefined;
+    return { model: groq(id), providerOptions };
+  }
+  return {
+    model: google(process.env.GEMINI_CHAT_MODEL || "gemini-3.5-flash-lite"),
+    providerOptions: undefined,
+  };
 }
 
 function systemPrompt(context: string) {
@@ -104,7 +117,7 @@ export async function POST(req: Request) {
   }
 
   const result = streamText({
-    model: chatModel(),
+    ...chatModel(),
     system: systemPrompt(context),
     messages: await convertToModelMessages(history),
     maxOutputTokens: 400,
