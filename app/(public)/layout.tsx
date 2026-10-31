@@ -1,5 +1,7 @@
+import { ChatLauncher } from "@/components/chat/chat-launcher";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { isChatConfigured } from "@/lib/rag";
 
 export default function PublicLayout({ children }: LayoutProps<"/">) {
   return (
@@ -7,6 +9,8 @@ export default function PublicLayout({ children }: LayoutProps<"/">) {
       <SiteHeader />
       <main className="flex-1">{children}</main>
       <SiteFooter />
+      {/* Hidden until the Gemini key and database are configured, so visitors never see a broken chat. */}
+      {isChatConfigured() && <ChatLauncher />}
     </>
   );
 }

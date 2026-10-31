@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { PageHeader } from "@/components/admin/page-header";
+import { RebuildKnowledge } from "@/components/admin/rebuild-knowledge";
 import { requireAdmin } from "@/lib/auth-guard";
 import { getDb } from "@/lib/db";
+import { isChatConfigured } from "@/lib/rag";
 
 export default async function AdminOverview() {
   const session = await requireAdmin();
   const db = getDb();
-  const [projects, drafts, posts, unread, recent] = await Promise.all([
+  const [projects, drafts, posts, unread, recent, chunks] = await Promise.all([
     db.project.count({ where: { published: true } }),
     db.project.count({ where: { published: false } }),
     db.post.count({ where: { published: true } }),
@@ -16,6 +18,7 @@ export default async function AdminOverview() {
       orderBy: { createdAt: "desc" },
       take: 5,
     }),
+    db.embedding.count(),
   ]);
 
   const stats = [
@@ -43,6 +46,10 @@ export default async function AdminOverview() {
             <p className="text-muted-foreground mt-1 text-sm">{s.label}</p>
           </Link>
         ))}
+      </div>
+
+      <div className="mt-6">
+        <RebuildKnowledge chunks={chunks} configured={isChatConfigured()} />
       </div>
 
       <section className="mt-10">

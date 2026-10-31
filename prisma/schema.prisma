@@ -69,3 +69,18 @@ model Message {
 
   @@index([archived, createdAt])
 }
+
+/// Chunks of site content with their embeddings, searched by the "Ask about my work" chatbot.
+/// Rebuilt from the admin dashboard; the vector size must match EMBEDDING_DIMENSIONS in lib/rag.ts.
+model Embedding {
+  id         String                      @id @default(cuid())
+  sourceType String
+  sourceId   String
+  title      String
+  url        String
+  chunk      String
+  vector     Unsupported("vector(768)")
+  createdAt  DateTime                    @default(now())
+
+  @@index([sourceType, sourceId])
+}

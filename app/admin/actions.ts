@@ -224,3 +224,23 @@ export async function getUploadSignature() {
     signature,
   };
 }
+
+// ---------------------------------------------------------------- chatbot knowledge
+
+export async function rebuildKnowledge(): Promise<{ ok: boolean; message: string }> {
+  await requireAdmin();
+  const { isChatConfigured, rebuildIndex } = await import("@/lib/rag");
+  if (!isChatConfigured()) {
+    return { ok: false, message: "Add GOOGLE_GENERATIVE_AI_API_KEY first." };
+  }
+  try {
+    const chunks = await rebuildIndex();
+    return {
+      ok: true,
+      message: `Indexed ${chunks} chunks. The assistant now knows your latest content.`,
+    };
+  } catch (e) {
+    console.error("[rebuildKnowledge]", e);
+    return { ok: false, message: e instanceof Error ? e.message : "Indexing failed." };
+  }
+}

@@ -40,3 +40,9 @@ function createLimiter(prefix: string, max: number, windowMinutes: number): Limi
 
 /** Contact form: 3 messages per 10 minutes per IP. */
 export const contactLimiter = createLimiter("contact", 3, 10);
+
+/** Chatbot: 10 questions per 10 minutes per IP. */
+export const chatLimiter = createLimiter("chat", 10, 10);
+
+/** Chatbot: 300 questions a day across all visitors, to cap the API bill. */
+export const chatDailyLimiter = createLimiter("chat-daily", 300, 24 * 60);
