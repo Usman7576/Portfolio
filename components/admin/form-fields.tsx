@@ -18,11 +18,12 @@ export function Field({
 }) {
   return (
     <div className="space-y-1.5">
-      <label htmlFor={name} className="text-sm font-medium">
+      <label htmlFor={name} className="block text-sm font-medium">
         {label}
       </label>
-      {hint && <p className="text-muted-foreground text-xs">{hint}</p>}
       {children}
+      {/* Hints sit under the input so side-by-side fields keep their inputs aligned. */}
+      {hint && <p className="text-muted-foreground text-xs">{hint}</p>}
       {error && (
         <p id={`${name}-error`} className="text-destructive text-sm">
           {error}
