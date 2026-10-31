@@ -39,7 +39,7 @@ export function ProjectFilter({ projects }: { projects: Project[] }) {
         {tag && ` using ${tag}`}
       </p>
 
-      <div className="mt-4 grid gap-6 lg:grid-cols-2">
+      <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {visible.map((project) => (
           <ProjectCard key={project.slug} project={project} />
         ))}

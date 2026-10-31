@@ -23,7 +23,7 @@ export default async function Home() {
             description="Each project starts with someone losing time or being left out, and ends with numbers I measured."
           />
         </Reveal>
-        <div className="mt-10 grid gap-6 lg:grid-cols-2">
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, i) => (
             <Reveal key={project.slug} delay={i * 0.08}>
               <ProjectCard project={project} />
