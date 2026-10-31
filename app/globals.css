@@ -133,7 +133,7 @@
   }
 }
 
-/* Static hero background; the Week 3 WebGL scene renders on top of it. */
+/* Static hero background; the WebGL scene renders on top of it. */
 .hero-glow {
   background:
     radial-gradient(
@@ -161,8 +161,53 @@
       color-mix(in oklch, var(--primary) 60%, transparent),
       transparent 60%
     );
-  filter: blur(2px);
-  opacity: 0.85;
+  filter: blur(24px);
+}
+
+/* The WebGL canvas fades in over the static orb instead of popping in. */
+.hero-canvas {
+  animation: hero-canvas-in 1.2s ease-out both;
+}
+
+.tilt-card {
+  position: relative;
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.25s ease-out;
+  will-change: transform;
+}
+
+.tilt-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-xl);
+  pointer-events: none;
+  background: radial-gradient(
+    24rem circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklch, var(--primary) 10%, transparent),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.tilt-card:hover::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce), (hover: none) {
+  .tilt-card {
+    transform: none;
+  }
+  .tilt-card::after {
+    display: none;
+  }
+}
+
+@keyframes hero-canvas-in {
+  from {
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

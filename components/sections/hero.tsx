@@ -1,15 +1,15 @@
 import { ArrowRight, Download } from "lucide-react";
 import Link from "next/link";
+import { HeroScene } from "@/components/three/hero-scene";
 import { site } from "@/lib/content";
 
-// No scroll reveal here: hero text must paint immediately.
+// No scroll reveal here: hero text must paint immediately; the 3D scene loads after it.
 export function Hero() {
   return (
     <section className="relative overflow-hidden">
-      {/* Static backdrop; the Week 3 WebGL scene renders on top of it. */}
       <div className="hero-glow pointer-events-none absolute inset-0" aria-hidden />
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 py-24 sm:px-6 md:grid-cols-2 md:py-32">
-        <div>
+        <div className="relative z-10">
           <p className="text-primary mb-4 font-mono text-sm">{site.title}</p>
           <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
             Hi, I&apos;m {site.name}.
@@ -30,10 +30,8 @@ export function Hero() {
             </Link>
           </div>
         </div>
-        <div
-          className="hero-orb mx-auto hidden aspect-square w-full max-w-sm md:block"
-          aria-hidden
-        />
+        {/* On phones the scene sits behind the text, faded; on desktop it fills the right column. */}
+        <HeroScene />
       </div>
     </section>
   );
