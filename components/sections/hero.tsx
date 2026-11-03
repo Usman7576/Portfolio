@@ -1,4 +1,5 @@
 import { ArrowRight, Download } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { HeroScene } from "@/components/three/hero-scene";
 import { site } from "@/lib/content";
@@ -8,8 +9,8 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden">
       <div className="hero-glow pointer-events-none absolute inset-0" aria-hidden />
-      <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 py-24 sm:px-6 md:grid-cols-2 md:py-32">
-        <div className="relative z-10">
+      <div className="relative mx-auto grid max-w-6xl items-center gap-8 px-4 py-16 sm:px-6 md:grid-cols-2 md:gap-12">
+        <div className="relative z-10 md:col-start-1 md:row-start-1">
           <p className="text-primary mb-4 font-mono text-sm">{site.title}</p>
           <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
             Hi, I&apos;m {site.name}.
@@ -30,8 +31,18 @@ export function Hero() {
             </Link>
           </div>
         </div>
-        {/* On phones the scene sits behind the text, faded; on desktop it fills the right column. */}
+        {/* On phones the scene sits behind the text, faded; on desktop it surrounds the portrait. */}
         <HeroScene />
+        <div className="ring-primary/40 shadow-primary/30 relative z-10 order-first size-36 justify-self-start overflow-hidden rounded-full shadow-2xl ring-2 ring-offset-4 ring-offset-transparent md:order-none md:col-start-2 md:row-start-1 md:size-64 md:justify-self-center lg:size-72">
+          <Image
+            src="/profile.jpg"
+            alt={`Portrait of ${site.name}`}
+            fill
+            sizes="(min-width: 1024px) 288px, (min-width: 768px) 256px, 144px"
+            className="object-cover"
+            priority
+          />
+        </div>
       </div>
     </section>
   );

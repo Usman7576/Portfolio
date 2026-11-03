@@ -23,7 +23,7 @@ export default function HeroCanvas({
       className="hero-canvas"
       dpr={[1, 1.5]}
       frameloop={active ? "always" : "never"}
-      camera={{ position: [0, 0, 9.5], fov: 45 }}
+      camera={{ position: [0, 0, 9], fov: 45 }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       // Track the cursor across the whole page, not only over the canvas.
       eventSource={document.body}

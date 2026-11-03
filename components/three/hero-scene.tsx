@@ -66,10 +66,10 @@ export function HeroScene() {
     <div
       ref={container}
       aria-hidden
-      className="pointer-events-none absolute inset-0 opacity-25 md:relative md:inset-auto md:mx-auto md:aspect-square md:w-full md:max-w-md md:opacity-100"
+      className="pointer-events-none absolute inset-0 opacity-25 md:relative md:inset-auto md:col-start-2 md:row-start-1 md:aspect-square md:w-[125%] md:max-w-[600px] md:justify-self-center md:opacity-100"
     >
       {/* Static fallback: always painted first, and all that shows without WebGL. */}
-      <div className="hero-orb absolute inset-[18%] opacity-50" />
+      <div className="hero-orb absolute inset-[12%] opacity-50" />
       {show3D && (
         <HeroCanvas
           active={onScreen}

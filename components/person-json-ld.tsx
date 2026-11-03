@@ -9,6 +9,7 @@ export function PersonJsonLd() {
     name: site.name,
     jobTitle: site.title,
     url: siteUrl,
+    image: `${siteUrl}/profile.jpg`,
     email: `mailto:${site.email}`,
     address: { "@type": "PostalAddress", addressLocality: "Faisalabad", addressCountry: "PK" },
     alumniOf: {
