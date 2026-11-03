@@ -55,8 +55,8 @@ facts, "I don't know" otherwise) with source links. Per-visitor and daily caps p
 plus one line geometry. three.js loads only after the page is idle on desktop, stops rendering off-screen, and
 falls back to a gradient on phones, weak devices and for reduced motion.
 
-Lighthouse on the live home page (with the 3D hero): Performance 80–87 mobile / 100 desktop;
-Accessibility, Best practices and SEO 100. Layout shift is 0.
+Lighthouse on the live home page: Performance 79–91 mobile / 85–93 desktop (with the 3D hero);
+Accessibility, Best practices and SEO 100. Layout shift is about 0.
 
 **Contact form.** Server action with Zod validation, a honeypot, 3 messages per 10 minutes per IP,
 saved to the database first and then emailed, so nothing is lost if email fails.
