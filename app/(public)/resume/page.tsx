@@ -1,7 +1,7 @@
 import { Download } from "lucide-react";
 import type { Metadata } from "next";
 import { PrintButton } from "@/components/print-button";
-import { about, getProjects, site, skillGroups, timeline } from "@/lib/content";
+import { about, getProjects, getResumeInfo, site, skillGroups, timeline } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Resume",
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ResumePage() {
-  const projects = await getProjects();
+  const [projects, resume] = await Promise.all([getProjects(), getResumeInfo()]);
   const leadership = timeline.filter((t) => t.when === "Leadership" || t.when === "Societies");
   const education = timeline.filter((t) => t.title.startsWith("BS "));
 
@@ -17,9 +17,9 @@ export default async function ResumePage() {
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 print:max-w-none print:p-0">
       <div className="mb-8 flex flex-wrap justify-end gap-3 print:hidden">
         <PrintButton />
-        {site.resumePdf && (
+        {resume && (
           <a
-            href={site.resumePdf}
+            href={resume.url}
             download
             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-9 items-center gap-2 rounded-md px-4 text-sm font-medium"
           >

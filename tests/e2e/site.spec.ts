@@ -30,7 +30,7 @@ test("contact form shows server-side validation errors", async ({ page }) => {
 });
 
 test("admin pages require sign-in", async ({ page }) => {
-  for (const path of ["/admin", "/admin/projects", "/admin/messages"]) {
+  for (const path of ["/admin", "/admin/projects", "/admin/resume", "/admin/messages"]) {
     await page.goto(path);
     await expect(page).toHaveURL(/\/admin\/login$/);
   }

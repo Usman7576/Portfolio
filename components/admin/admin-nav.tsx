@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, FolderKanban, Inbox, LayoutDashboard } from "lucide-react";
+import { FileText, FileUser, FolderKanban, Inbox, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -9,6 +9,7 @@ const links = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
   { href: "/admin/posts", label: "Posts", icon: FileText },
+  { href: "/admin/resume", label: "Resume", icon: FileUser },
   { href: "/admin/messages", label: "Messages", icon: Inbox },
 ];
 

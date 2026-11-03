@@ -6,6 +6,7 @@ import { updateTag } from "next/cache";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { requireAdmin } from "@/lib/auth-guard";
 import { getDb } from "@/lib/db";
+import { resumeFileError } from "@/lib/resume-file";
 import { lines, readingTime, slugify } from "@/lib/text";
 import { postSchema, projectSchema } from "@/lib/validations";
 
@@ -243,4 +244,31 @@ export async function rebuildKnowledge(): Promise<{ ok: boolean; message: string
     console.error("[rebuildKnowledge]", e);
     return { ok: false, message: e instanceof Error ? e.message : "Indexing failed." };
   }
+}
+
+// ---------------------------------------------------------------- resume
+
+export async function uploadResume(_prev: FormState, fd: FormData): Promise<FormState> {
+  await requireAdmin();
+  const file = fd.get("file");
+  if (!(file instanceof File)) return { status: "error", message: "Please choose a PDF file." };
+
+  const data = new Uint8Array(await file.arrayBuffer());
+  const problem = resumeFileError(file.size, data);
+  if (problem) return { status: "error", message: problem };
+
+  const fields = { filename: file.name.slice(0, 200), size: file.size, data };
+  await getDb().resume.upsert({
+    where: { id: "resume" },
+    create: { id: "resume", ...fields },
+    update: fields,
+  });
+  updateTag("resume");
+  return { status: "idle" };
+}
+
+export async function deleteResume() {
+  await requireAdmin();
+  await getDb().resume.deleteMany({});
+  updateTag("resume");
 }

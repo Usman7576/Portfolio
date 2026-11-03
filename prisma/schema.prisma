@@ -84,3 +84,12 @@ model Embedding {
 
   @@index([sourceType, sourceId])
 }
+
+/// The downloadable resume PDF, replaced from the admin dashboard. Only one row ever exists.
+model Resume {
+  id        String   @id @default("resume")
+  filename  String
+  size      Int
+  data      Bytes
+  updatedAt DateTime @updatedAt
+}

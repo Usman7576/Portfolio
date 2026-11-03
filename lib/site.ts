@@ -9,8 +9,6 @@ export const site = {
   email: "usmanbusiness7576@gmail.com",
   github: "https://github.com/Usman7576",
   linkedin: "https://www.linkedin.com/in/usman-ai-enthusiast",
-  /** Path under /public. Null until an up-to-date PDF is added; /resume then shows the HTML version only. */
-  resumePdf: null as string | null,
 };
 
 export const about = {

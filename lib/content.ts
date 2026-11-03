@@ -118,3 +118,25 @@ export async function getPost(slug: string): Promise<PostWithContent | undefined
     coverImage: p.coverImage ?? undefined,
   };
 }
+
+export type ResumeInfo = { url: string; filename: string; size: number; updatedAt: string };
+
+/** The uploaded resume's details, without the file itself. Null until one is uploaded. */
+export async function getResumeInfo(): Promise<ResumeInfo | null> {
+  "use cache";
+  cacheLife("max");
+  cacheTag("resume");
+  if (!hasDatabase()) return null;
+
+  const r = await getDb().resume.findUnique({
+    where: { id: "resume" },
+    select: { filename: true, size: true, updatedAt: true },
+  });
+  if (!r) return null;
+  return {
+    url: `/resume.pdf?v=${r.updatedAt.getTime()}`,
+    filename: r.filename,
+    size: r.size,
+    updatedAt: r.updatedAt.toISOString().slice(0, 10),
+  };
+}
