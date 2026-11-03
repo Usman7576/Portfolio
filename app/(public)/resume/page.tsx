@@ -1,6 +1,7 @@
-import { Download } from "lucide-react";
+import { Download, ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
 import { PrintButton } from "@/components/print-button";
+import { ResumeViewer } from "@/components/resume-viewer";
 import { about, getProjects, getResumeInfo, site, skillGroups, timeline } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -10,6 +11,36 @@ export const metadata: Metadata = {
 
 export default async function ResumePage() {
   const [projects, resume] = await Promise.all([getProjects(), getResumeInfo()]);
+
+  // An uploaded PDF is the resume: show it. The version built from site content is only a fallback.
+  if (resume) {
+    return (
+      <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+          <h1 className="text-2xl font-semibold tracking-tight">Resume</h1>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href={resume.url}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:bg-accent inline-flex h-9 items-center gap-2 rounded-md border px-4 text-sm font-medium"
+            >
+              <ExternalLink className="size-4" /> Open
+            </a>
+            <a
+              href={resume.url}
+              download
+              className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-9 items-center gap-2 rounded-md px-4 text-sm font-medium"
+            >
+              <Download className="size-4" /> Download PDF
+            </a>
+          </div>
+        </div>
+        <ResumeViewer url={resume.url} />
+      </div>
+    );
+  }
+
   const leadership = timeline.filter((t) => t.when === "Leadership" || t.when === "Societies");
   const education = timeline.filter((t) => t.title.startsWith("BS "));
 
@@ -17,15 +48,6 @@ export default async function ResumePage() {
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 print:max-w-none print:p-0">
       <div className="mb-8 flex flex-wrap justify-end gap-3 print:hidden">
         <PrintButton />
-        {resume && (
-          <a
-            href={resume.url}
-            download
-            className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-9 items-center gap-2 rounded-md px-4 text-sm font-medium"
-          >
-            <Download className="size-4" /> Download PDF
-          </a>
-        )}
       </div>
 
       <article className="bg-card rounded-xl border p-6 sm:p-10 print:border-0 print:p-0">
