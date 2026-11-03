@@ -51,9 +51,9 @@ embeds them with Gemini and stores them in pgvector. Each question is embedded, 
 chunks are retrieved by cosine distance, and Gemini answers under a strict prompt (only these
 facts, "I don't know" otherwise) with source links. Per-visitor and daily caps protect the bill.
 
-**3D hero on a budget.** About 80 nodes on desktop and 40 on phones, drawn as one instanced mesh
-plus one line geometry. three.js loads only after the page is idle, stops rendering off-screen, and
-falls back to a gradient for reduced motion or weak devices.
+**3D hero on a budget.** About 80 nodes around the portrait (40 on modest machines), drawn as one instanced mesh
+plus one line geometry. three.js loads only after the page is idle on desktop, stops rendering off-screen, and
+falls back to a gradient on phones, weak devices and for reduced motion.
 
 Lighthouse on the live home page (with the 3D hero): Performance 80–87 mobile / 100 desktop;
 Accessibility, Best practices and SEO 100. Layout shift is 0.

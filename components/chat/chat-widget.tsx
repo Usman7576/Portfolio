@@ -7,13 +7,16 @@ import { useEffect, useRef, useState } from "react";
 import { MAX_QUESTION_LENGTH, suggestedQuestions, type ChatUIMessage } from "@/lib/chat";
 import { cn } from "@/lib/utils";
 
+/** Mounted by ChatLauncher on the first click, so it starts open. */
 export function ChatWidget() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [input, setInput] = useState("");
   const { messages, sendMessage, status, error, stop, clearError } = useChat<ChatUIMessage>();
   const scroller = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const busy = status === "submitted" || status === "streaming";
+
+  useEffect(() => inputRef.current?.focus(), []);
 
   // Keep the newest message in view while an answer streams in.
   useEffect(() => {

@@ -31,7 +31,7 @@ export function Hero() {
             </Link>
           </div>
         </div>
-        {/* On phones the scene sits behind the text, faded; on desktop it surrounds the portrait. */}
+        {/* The scene surrounds the portrait on desktop; phones get only its static backdrop. */}
         <HeroScene />
         <div className="ring-primary/40 shadow-primary/30 relative z-10 order-first size-36 justify-self-start overflow-hidden rounded-full shadow-2xl ring-2 ring-offset-4 ring-offset-transparent md:order-none md:col-start-2 md:row-start-1 md:size-64 md:justify-self-center lg:size-72">
           <Image

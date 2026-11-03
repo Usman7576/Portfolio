@@ -12,12 +12,15 @@ const HeroCanvas = dynamic(() => import("@/components/three/hero-canvas"), {
 
 type Tier = "static" | "low" | "high";
 
-/** Rough device budget: weak devices keep the static backdrop, small or modest ones get fewer nodes. */
+/**
+ * Rough device budget. Phones and weak devices keep the static backdrop: on a phone the scene would
+ * only be a faint layer behind the text, not worth three.js's download and start-up cost.
+ */
 function getTier(): Tier {
   const cores = navigator.hardwareConcurrency ?? 4;
   const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8;
-  if (cores <= 2 || memory <= 2) return "static";
-  if (window.innerWidth < 768 || cores <= 4 || memory <= 4) return "low";
+  if (window.innerWidth < 768 || cores <= 2 || memory <= 2) return "static";
+  if (cores <= 4 || memory <= 4) return "low";
   return "high";
 }
 
